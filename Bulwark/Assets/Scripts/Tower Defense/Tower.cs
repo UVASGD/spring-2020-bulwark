@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace TDCGG {
-    public enum TargetType { first, last, strongest, weakest }
-
     public class Tower : MonoBehaviour {
+        public Dictionary<TowerPropertyOption, TowerProperty> properties;
+        public List<Synergy> synergies;
+
         public TargetType targetType;
         public float range = 3f;
 
         public List<Material> materials;
-
+        
         List<GameObject> queue;
         public bool activated;
         public bool targetInRange;
@@ -18,6 +20,22 @@ namespace TDCGG {
         public GameObject currentTarget; //Probably make this a Unit, not GameObject
 
         public TowerSlot benchSlot;
+
+        void InitProperties () {
+            properties = new Dictionary<TowerPropertyOption, TowerProperty>();
+            AddProperty(TowerPropertyOption.AttackSpeed, 1f);
+            AddProperty(TowerPropertyOption.MinDamage, 1f);
+            AddProperty(TowerPropertyOption.MaxDamage, 5f);
+            AddProperty(TowerPropertyOption.CritChance, 0.25f);
+            AddProperty(TowerPropertyOption.SlowPercent, 0.0f);
+            AddProperty(TowerPropertyOption.FreezePercent, 0.0f);
+            AddProperty(TowerPropertyOption.StunPercent, 0.0f);
+            AddProperty(TowerPropertyOption.RootPercent, 0.0f);
+            AddProperty(TowerPropertyOption.BurnPercent, 0.0f);
+            AddProperty(TowerPropertyOption.SunderPercent, 0.0f);
+            AddProperty(TowerPropertyOption.ShatterPercent, 0.0f);
+            AddProperty(TowerPropertyOption.SinPercent, 0.0f);
+        }
 
         void Start () {
             queue = new List<GameObject>();
@@ -89,10 +107,11 @@ namespace TDCGG {
         }
 
         IEnumerator FireCR () {
-            float maxCD = 2f;
+            float maxCD = properties[TowerPropertyOption.AttackSpeed].value;
             float currentCD = maxCD;
             while (currentTarget != null) {
                 if (currentCD <= 0f) {
+                    maxCD = properties[TowerPropertyOption.AttackSpeed].value;
                     currentCD = maxCD;
                     print(gameObject.name + "firing on " + currentTarget);
                 }
@@ -110,5 +129,65 @@ namespace TDCGG {
             if (!activated) return;
             activated = false;
         }
+
+        #region PROPERTIES
+        public enum TowerPropertyOption {
+            AttackSpeed,
+            MinDamage,
+            MaxDamage,
+            CritChance,
+            SlowPercent,
+            FreezePercent,
+            StunPercent,
+            RootPercent,
+            BurnPercent,
+            SunderPercent,
+            ShatterPercent,
+            SinPercent,
+        }
+
+        public void AddProperty (TowerPropertyOption type, float value) {
+            KeyValuePair<TowerPropertyOption, TowerProperty> kvp = GetProperty(type, value);
+            properties.Add(kvp.Key, kvp.Value);
+        }
+
+        public static KeyValuePair<TowerPropertyOption, TowerProperty> GetProperty (TowerPropertyOption type, float value) {
+            var kvp = new KeyValuePair<TowerPropertyOption, TowerProperty>(type,
+                new TowerProperty(type.ToString(), value));
+            return kvp;
+        }
+        #endregion
+    }
+
+    public enum TargetType { first, last, strongest, weakest }
+
+    public class TowerProperty : MonoBehaviour {
+        public new string name;
+        public float value;
+        private float initValue;
+        public List<UnityEvent> events;
+
+        public TowerProperty (string name, float defaultValue) {
+            this.name = name;
+            value = defaultValue;
+        }
+
+        void Init () {
+            initValue = value;
+        }
+
+        public void Reset () {
+            value = initValue;
+        }
+
+        public void Add (float x) {
+            value += x;
+        }
+
+        public void Multiply (float x) {
+            value *= x;
+        }
+
+
     }
 }

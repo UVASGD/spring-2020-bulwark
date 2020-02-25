@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using TDCGG;
 
 public class CreateTowerWindow : EditorWindow {
     new string name = "New Tower";
@@ -22,8 +23,26 @@ public class CreateTowerWindow : EditorWindow {
     void OnGUI () {
         GUILayout.Label("Base Settings", EditorStyles.boldLabel);
         name = EditorGUILayout.TextField("Name", name);
-        towerBase = (Mesh)EditorGUILayout.ObjectField("Tower Base Model", towerBase, typeof(Mesh));
-        towerGun = (Mesh)EditorGUILayout.ObjectField("Tower Gun Model", towerGun, typeof(Mesh));
+        towerBase = (Mesh)EditorGUILayout.ObjectField("Tower Model", towerBase, typeof(Mesh));
+        //towerGun = (Mesh)EditorGUILayout.ObjectField("Tower Gun Model", towerGun, typeof(Mesh));
         //EditorGUILayout.b
+
+        if (GUILayout.Button("Create")) {
+            CreateObject();
+        }
+
+        void CreateObject () {
+            GameObject tempobj = new GameObject(name);
+            tempobj.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+            //Mesh
+            MeshFilter mf = tempobj.AddComponent<MeshFilter>();
+            MeshRenderer mr = tempobj.AddComponent<MeshRenderer>();
+            mf.mesh = towerBase;
+
+            //Tower
+            Tower tower = tempobj.AddComponent<Tower>();
+            //tower.
+        }
     }
 }
