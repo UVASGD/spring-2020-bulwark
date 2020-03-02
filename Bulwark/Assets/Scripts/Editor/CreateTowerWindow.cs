@@ -6,9 +6,6 @@ using TDCGG;
 
 public class CreateTowerWindow : EditorWindow {
     new string name = "New Tower";
-    bool groupEnabled;
-    bool myBool = true;
-    float myFloat = 1.23f;
     Mesh towerBase;
     Mesh towerGun;
 

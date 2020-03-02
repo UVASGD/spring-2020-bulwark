@@ -10,10 +10,10 @@ namespace TDCGG {
         public PlayerManager owner;
 
         [SerializeField]
-        private UnitType type;
+        public UnitType type;
 
         [SerializeField]
-        private float maxHealth = 100f;
+        public float maxHealth = 100f;
         private float currentHealth;
         public bool alive;
 

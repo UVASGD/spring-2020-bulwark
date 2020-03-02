@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TDCCG;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,7 +9,7 @@ namespace TDCGG {
         public Dictionary<TowerPropertyOption, TowerProperty> properties;
         public List<Synergy> synergies;
 
-        public TargetType targetType;
+        public TowerTargetType targetType;
         public float range = 3f;
 
         public List<Material> materials;
@@ -65,14 +66,14 @@ namespace TDCGG {
         GameObject GetTarget () {
             if (queue.Count == 0) return null;
             switch (targetType) {
-                case TargetType.first:
+                case TowerTargetType.first:
                     return queue[0];
-                case TargetType.last:
+                case TowerTargetType.last:
                     return queue[queue.Count - 1];
-                case TargetType.strongest:
+                case TowerTargetType.strongest:
                     //TODO
                     return null;
-                case TargetType.weakest:
+                case TowerTargetType.weakest:
                     //TODO
                     return null;
                 default:
@@ -159,35 +160,5 @@ namespace TDCGG {
         #endregion
     }
 
-    public enum TargetType { first, last, strongest, weakest }
-
-    public class TowerProperty : MonoBehaviour {
-        public new string name;
-        public float value;
-        private float initValue;
-        public List<UnityEvent> events;
-
-        public TowerProperty (string name, float defaultValue) {
-            this.name = name;
-            value = defaultValue;
-        }
-
-        void Init () {
-            initValue = value;
-        }
-
-        public void Reset () {
-            value = initValue;
-        }
-
-        public void Add (float x) {
-            value += x;
-        }
-
-        public void Multiply (float x) {
-            value *= x;
-        }
-
-
-    }
+    public enum TowerTargetType { first, last, strongest, weakest }
 }
