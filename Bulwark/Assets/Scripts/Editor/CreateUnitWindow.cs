@@ -8,8 +8,8 @@ public class CreateUnitWindow : EditorWindow {
     new string name = "New Unit";
     Mesh unitMesh;
     UnitType type;
-    float maxHealth;
-    float moveSpeed;
+    float maxHealth = 100f;
+    float moveSpeed = 1f;
 
     // Add menu named "My Window" to the Window menu
     [MenuItem("Bulwark/Create Unit")]

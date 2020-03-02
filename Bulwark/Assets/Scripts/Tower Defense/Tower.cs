@@ -10,7 +10,6 @@ namespace TDCGG {
         public List<Synergy> synergies;
 
         public TowerTargetType targetType;
-        public float range = 3f;
 
         public List<Material> materials;
         
@@ -24,6 +23,7 @@ namespace TDCGG {
 
         void InitProperties () {
             properties = new Dictionary<TowerPropertyOption, TowerProperty>();
+            AddProperty(TowerPropertyOption.Range, 1f);
             AddProperty(TowerPropertyOption.AttackSpeed, 1f);
             AddProperty(TowerPropertyOption.MinDamage, 1f);
             AddProperty(TowerPropertyOption.MaxDamage, 5f);
@@ -133,6 +133,7 @@ namespace TDCGG {
 
         #region PROPERTIES
         public enum TowerPropertyOption {
+            Range,
             AttackSpeed,
             MinDamage,
             MaxDamage,
