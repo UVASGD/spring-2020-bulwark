@@ -16,7 +16,8 @@ namespace TDCGG {
         public bool targetInRange;
         public bool firing;
         public GameObject currentTarget; //Probably make this a Unit, not GameObject
-
+        public GameObject bullet;
+        public Transform FirePoint;
         public TowerSlot benchSlot;
 
         void Start () {
@@ -94,8 +95,9 @@ namespace TDCGG {
             while (currentTarget != null) {
                 if (currentCD <= 0f) {
                     currentCD = maxCD;
-                    print(gameObject.name + "firing on " + currentTarget);
                 }
+                Instantiate(bullet, FirePoint.position, Quaternion.identity);
+                print(gameObject.name + "firing on " + currentTarget);
                 currentCD -= Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }

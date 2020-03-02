@@ -9,6 +9,7 @@ namespace TDCGG {
         public float speed = 10f;
         public int durability = 1;
         public float damage = 20f;
+        public GameObject bullet;
 
 
 
@@ -30,7 +31,7 @@ namespace TDCGG {
 
             transform.position += (targetPosition - transform.position).normalized * speed * Time.deltaTime;
         }
-
+           
         private void OnTriggerEnter (Collider other) {
             if (other.transform.root.GetComponent<Unit>()) {
                 other.transform.root.GetComponent<Unit>().TakeDamage(damage);
