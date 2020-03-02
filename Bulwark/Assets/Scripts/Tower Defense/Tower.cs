@@ -1,23 +1,54 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TDCCG;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace TDCGG {
-    public enum TargetType { first, last, strongest, weakest }
-
     public class Tower : MonoBehaviour {
-        public TargetType targetType;
-        public float range = 3f;
+        public Dictionary<TowerPropertyOption, TowerProperty> properties;
 
+        [Header("Synergy")]
+        public List<Synergy> synergies;
+
+        [Header("Targeting")]
+        public TowerTargetType targetType;
+
+        [HideInInspector]
         public List<Material> materials;
 
-        List<GameObject> queue;
+        [Header("Default Stats")]
+        public float defaultRange = 3f;
+        public float defaultAttackSpeed = 1f;
+        public float defaultMinDamage = 1f;
+        public float defaultMaxDamage = 2f;
+        public float defaultCritChance = 0.25f;
+
+        [Header("Realtime Info")]
+        public List<GameObject> queue;
         public bool activated;
         public bool targetInRange;
         public bool firing;
-        public GameObject currentTarget; //Probably make this a Unit, not GameObject
+        public GameObject currentTarget; //TODO: Probably make this a Unit, not GameObject
 
         public TowerSlot benchSlot;
+
+        void InitProperties () {
+            properties = new Dictionary<TowerPropertyOption, TowerProperty>();
+            AddProperty(TowerPropertyOption.Range, defaultRange);
+            AddProperty(TowerPropertyOption.AttackSpeed, defaultAttackSpeed);
+            AddProperty(TowerPropertyOption.MinDamage, defaultMinDamage);
+            AddProperty(TowerPropertyOption.MaxDamage, defaultMaxDamage);
+            AddProperty(TowerPropertyOption.CritChance, defaultCritChance);
+            AddProperty(TowerPropertyOption.SlowPercent, 0.0f);
+            AddProperty(TowerPropertyOption.FreezePercent, 0.0f);
+            AddProperty(TowerPropertyOption.StunPercent, 0.0f);
+            AddProperty(TowerPropertyOption.RootPercent, 0.0f);
+            AddProperty(TowerPropertyOption.BurnPercent, 0.0f);
+            AddProperty(TowerPropertyOption.SunderPercent, 0.0f);
+            AddProperty(TowerPropertyOption.ShatterPercent, 0.0f);
+            AddProperty(TowerPropertyOption.SinPercent, 0.0f);
+        }
 
         void Start () {
             queue = new List<GameObject>();
@@ -47,14 +78,14 @@ namespace TDCGG {
         GameObject GetTarget () {
             if (queue.Count == 0) return null;
             switch (targetType) {
-                case TargetType.first:
+                case TowerTargetType.first:
                     return queue[0];
-                case TargetType.last:
+                case TowerTargetType.last:
                     return queue[queue.Count - 1];
-                case TargetType.strongest:
+                case TowerTargetType.strongest:
                     //TODO
                     return null;
-                case TargetType.weakest:
+                case TowerTargetType.weakest:
                     //TODO
                     return null;
                 default:
@@ -89,10 +120,11 @@ namespace TDCGG {
         }
 
         IEnumerator FireCR () {
-            float maxCD = 2f;
+            float maxCD = properties[TowerPropertyOption.AttackSpeed].value;
             float currentCD = maxCD;
             while (currentTarget != null) {
                 if (currentCD <= 0f) {
+                    maxCD = properties[TowerPropertyOption.AttackSpeed].value;
                     currentCD = maxCD;
                     print(gameObject.name + "firing on " + currentTarget);
                 }
@@ -110,5 +142,36 @@ namespace TDCGG {
             if (!activated) return;
             activated = false;
         }
+
+        #region PROPERTIES
+        public enum TowerPropertyOption {
+            Range,
+            AttackSpeed,
+            MinDamage,
+            MaxDamage,
+            CritChance,
+            SlowPercent,
+            FreezePercent,
+            StunPercent,
+            RootPercent,
+            BurnPercent,
+            SunderPercent,
+            ShatterPercent,
+            SinPercent,
+        }
+
+        public void AddProperty (TowerPropertyOption type, float value) {
+            KeyValuePair<TowerPropertyOption, TowerProperty> kvp = GetProperty(type, value);
+            properties.Add(kvp.Key, kvp.Value);
+        }
+
+        public static KeyValuePair<TowerPropertyOption, TowerProperty> GetProperty (TowerPropertyOption type, float value) {
+            var kvp = new KeyValuePair<TowerPropertyOption, TowerProperty>(type,
+                new TowerProperty(type.ToString(), value));
+            return kvp;
+        }
+        #endregion
     }
+
+    public enum TowerTargetType { first, last, strongest, weakest }
 }

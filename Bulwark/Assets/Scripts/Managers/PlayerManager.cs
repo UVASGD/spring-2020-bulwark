@@ -19,6 +19,7 @@ namespace TDCGG {
         public WaveManager waveManager;
         public HealthManager healthManager;
         public PlacementManager placementManager;
+        public SynergyManager synergyManager;
 
 
         [Header("Level and XP")]
@@ -52,6 +53,7 @@ namespace TDCGG {
             waveManager.playerManager = this;
             healthManager.playerManager = this;
             placementManager.playerManager = this;
+            synergyManager.playerManager = this;
         }
 
         public void Start () {
