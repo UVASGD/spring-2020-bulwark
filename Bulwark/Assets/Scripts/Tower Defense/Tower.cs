@@ -64,9 +64,12 @@ namespace TDCGG {
         }
 
         void OnTriggerEnter (Collider other) {
-            if (!targetInRange) targetInRange = true;
-            queue.Add(other.gameObject);
-            currentTarget = GetTarget();
+            if (other.CompareTag("Unit"))
+            {
+                if (!targetInRange) targetInRange = true;
+                queue.Add(other.gameObject);
+                currentTarget = GetTarget();
+            }
         }
 
         void OnTriggerExit (Collider other) {
@@ -77,6 +80,12 @@ namespace TDCGG {
 
         void Update () {
             if (!activated) return;
+            if (targetInRange) {
+            }
+            if (currentTarget != null)
+            {
+                print(currentTarget);
+            }
             if (targetInRange && currentTarget == null) {
                 currentTarget = GetTarget();
             }

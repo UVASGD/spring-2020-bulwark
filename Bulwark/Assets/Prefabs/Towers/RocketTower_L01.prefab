@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 5164597176339195709}
   - component: {fileID: 5164597175546563461}
   - component: {fileID: 931610810317753580}
+  - component: {fileID: 7609777196765729222}
   m_Layer: 8
   m_Name: RocketTower_L01
   m_TagString: Untagged
@@ -78,7 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetType: 0
-  range: 3
+  range: 10000
   materials: []
   activated: 0
   targetInRange: 0
@@ -95,11 +96,27 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5164597176339195710}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 12
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &7609777196765729222
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5164597176339195710}
+  serializedVersion: 2
+  m_Mass: 100000
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1001 &5164597175292778831
 PrefabInstance:
   m_ObjectHideFlags: 0
