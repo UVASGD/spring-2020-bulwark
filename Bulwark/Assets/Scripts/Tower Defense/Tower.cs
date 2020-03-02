@@ -7,27 +7,39 @@ using UnityEngine.Events;
 namespace TDCGG {
     public class Tower : MonoBehaviour {
         public Dictionary<TowerPropertyOption, TowerProperty> properties;
+
+        [Header("Synergy")]
         public List<Synergy> synergies;
 
+        [Header("Targeting")]
         public TowerTargetType targetType;
 
+        [HideInInspector]
         public List<Material> materials;
-        
-        List<GameObject> queue;
+
+        [Header("Default Stats")]
+        public float defaultRange = 3f;
+        public float defaultAttackSpeed = 1f;
+        public float defaultMinDamage = 1f;
+        public float defaultMaxDamage = 2f;
+        public float defaultCritChance = 0.25f;
+
+        [Header("Realtime Info")]
+        public List<GameObject> queue;
         public bool activated;
         public bool targetInRange;
         public bool firing;
-        public GameObject currentTarget; //Probably make this a Unit, not GameObject
+        public GameObject currentTarget; //TODO: Probably make this a Unit, not GameObject
 
         public TowerSlot benchSlot;
 
         void InitProperties () {
             properties = new Dictionary<TowerPropertyOption, TowerProperty>();
-            AddProperty(TowerPropertyOption.Range, 1f);
-            AddProperty(TowerPropertyOption.AttackSpeed, 1f);
-            AddProperty(TowerPropertyOption.MinDamage, 1f);
-            AddProperty(TowerPropertyOption.MaxDamage, 5f);
-            AddProperty(TowerPropertyOption.CritChance, 0.25f);
+            AddProperty(TowerPropertyOption.Range, defaultRange);
+            AddProperty(TowerPropertyOption.AttackSpeed, defaultAttackSpeed);
+            AddProperty(TowerPropertyOption.MinDamage, defaultMinDamage);
+            AddProperty(TowerPropertyOption.MaxDamage, defaultMaxDamage);
+            AddProperty(TowerPropertyOption.CritChance, defaultCritChance);
             AddProperty(TowerPropertyOption.SlowPercent, 0.0f);
             AddProperty(TowerPropertyOption.FreezePercent, 0.0f);
             AddProperty(TowerPropertyOption.StunPercent, 0.0f);
