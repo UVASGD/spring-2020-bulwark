@@ -205,7 +205,7 @@ MonoBehaviour:
   waveManager: {fileID: 7126401948951732406}
   healthManager: {fileID: 1667287183}
   placementManager: {fileID: 0}
-  synergyManager: {fileID: 0}
+  synergyManager: {fileID: 5424541894777184083}
   currentLevel: 0
   xpToLevelFunction:
   - 1.3342776
